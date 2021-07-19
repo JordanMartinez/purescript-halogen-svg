@@ -60,6 +60,7 @@ type StrokeAttributes r =
   , strokeDasharray :: String
   , strokeDashoffset :: Number
   , strokeOpacity :: Number
+  , strokeWidth :: Number
   | r
   )
 
