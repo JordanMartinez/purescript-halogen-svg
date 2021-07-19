@@ -36,11 +36,24 @@ module Halogen.Svg.Attributes
   , x1, y1
   , x2, y2
   , stroke
+  , stroke_dasharray
+  , stroke_dashoffset
+  , stroke_linecap
+  , stroke_linejoin
+  , stroke_miterlimit
+  , stroke_opacity
   , fill
+  , fillOpacity
   , transform
   , d
   , text_anchor
+  , font_family
   , font_size
+  , font_size_adjust
+  , font_stretch
+  , font_style
+  , font_variant
+  , font_weight
   , dominant_baseline
   , class_
   , classes
@@ -50,6 +63,8 @@ module Halogen.Svg.Attributes
   , orient
   , markerUnits
   , strokeWidth
+  , markerStart
+  , markerMid
   , markerEnd
   , DurationF(..)
   , printDurationF
@@ -71,14 +86,13 @@ module Halogen.Svg.Attributes
 -- Like Halogen.HTML.Properties
 
 import Prelude
+
 import Data.Maybe (Maybe(..), maybe)
 import Data.Newtype (un)
 import Data.String (joinWith, toUpper)
-
-import Halogen.Svg.Core as Core
-
 import Halogen.HTML.Core (Prop, AttrName(AttrName), Namespace(Namespace), ClassName(..))
 import Halogen.HTML.Properties (IProp, attrNS)
+import Halogen.Svg.Core as Core
 import Unsafe.Coerce (unsafeCoerce)
 
 data Color = RGB Int Int Int
@@ -398,8 +412,32 @@ y2 = attr (AttrName "y2") <<< show
 stroke :: forall r i. Maybe Color -> IProp (stroke :: String | r) i
 stroke = attr (AttrName "stroke") <<< printColor
 
+stroke_dasharray :: forall r i. String -> IProp (strokeDasharray :: String | r) i
+stroke_dasharray = attr (AttrName "stroke-dasharray")
+
+stroke_dashoffset :: forall r i. Number -> IProp (strokeDashoffset :: String | r) i
+stroke_dashoffset = attr (AttrName "stroke-dashoffset") <<< show
+
+stroke_linecap :: forall r i. String -> IProp (strokeLinecap :: String | r) i
+stroke_linecap = attr (AttrName "stroke-linecap")
+
+stroke_linejoin :: forall r i. String -> IProp (strokeLinejoin :: String | r) i
+stroke_linejoin = attr (AttrName "stroke-linejoin")
+
+stroke_miterlimit :: forall r i. String -> IProp (strokeMiterlimit :: String | r) i
+stroke_miterlimit = attr (AttrName "stroke-miterlimit")
+
+stroke_opacity :: forall r i. Number -> IProp (strokeOpacity :: String | r) i
+stroke_opacity = attr (AttrName "stroke-opacity") <<< show
+
+strokeWidth :: forall r i. Number -> IProp (strokeWidth :: Number | r) i
+strokeWidth = attr (AttrName "stroke-width") <<< show
+
 fill :: forall r i. Maybe Color -> IProp (fill :: String | r) i
 fill = attr (AttrName "fill") <<< printColor
+
+fillOpacity :: forall r i. Number -> IProp (fillOpacity :: Number | r) i
+fillOpacity = attr (AttrName "fill-opacity") <<< show
 
 transform :: forall r i . Array Transform -> IProp (transform :: String | r) i
 transform = attr (AttrName "transform") <<< joinWith " " <<< map printTransform
@@ -413,8 +451,26 @@ d = attr (AttrName "d") <<< joinWith " " <<< unwrapNewtype
 text_anchor :: forall r i . TextAnchor -> IProp (text_anchor :: String | r) i
 text_anchor = attr (AttrName "text-anchor") <<< printTextAnchor
 
+font_family :: forall r i. String -> IProp (font_family :: String | r) i
+font_family = attr (AttrName "font-family")
+
 font_size :: forall r i. FontSize -> IProp (font_size :: String | r) i
 font_size = attr (AttrName "font-size") <<< show
+
+font_size_adjust :: forall r i. Number -> IProp (font_size_adjust :: String | r) i
+font_size_adjust = attr (AttrName "font-size-adjust") <<< show
+
+font_stretch :: forall r i. String -> IProp (font_stretch :: String | r) i
+font_stretch = attr (AttrName "font-stretch")
+
+font_style :: forall r i. String -> IProp (font_style :: String | r) i
+font_style = attr (AttrName "font-style")
+
+font_variant :: forall r i. String -> IProp (font_variant :: String | r) i
+font_variant = attr (AttrName "font-variant")
+
+font_weight :: forall r i. String -> IProp (font_weight :: String | r) i
+font_weight = attr (AttrName "font-weight")
 
 dominant_baseline :: forall r i . Baseline -> IProp (transform :: String | r) i
 dominant_baseline = attr (AttrName "dominant-baseline") <<< printBaseline
@@ -449,11 +505,15 @@ orient = attr (AttrName "orient") <<< printOrient
 markerUnits :: forall r i. MarkerUnit -> IProp (markerUnits :: String | r) i
 markerUnits = attr (AttrName "markerUnits") <<< printMarkerUnit
 
-strokeWidth :: forall r i. Number -> IProp (strokeWidth :: Number | r) i
-strokeWidth = attr (AttrName "stroke-width") <<< show
+markerStart :: forall r i. String -> IProp (markerStart :: String | r) i
+markerStart = attr (AttrName "marker-start")
+
+markerMid :: forall r i. String -> IProp (markerMid :: String | r) i
+markerMid = attr (AttrName "marker-mid")
 
 markerEnd :: forall r i. String -> IProp (markerEnd :: String | r) i
 markerEnd = attr (AttrName "marker-end")
+
 
 --------------------------------------------------------------------------------
 
