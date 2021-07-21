@@ -451,25 +451,25 @@ d = attr (AttrName "d") <<< joinWith " " <<< unwrapNewtype
 text_anchor :: forall r i . TextAnchor -> IProp (text_anchor :: String | r) i
 text_anchor = attr (AttrName "text-anchor") <<< printTextAnchor
 
-font_family :: forall r i. String -> IProp (fontFamily :: String | r) i
+font_family :: forall r i. String -> IProp (font_family :: String | r) i
 font_family = attr (AttrName "font-family")
 
-font_size :: forall r i. FontSize -> IProp (fontSize :: String | r) i
+font_size :: forall r i. FontSize -> IProp (font_size :: String | r) i
 font_size = attr (AttrName "font-size") <<< show
 
-font_size_adjust :: forall r i. Number -> IProp (fontSizeAdjust :: String | r) i
+font_size_adjust :: forall r i. Number -> IProp (font_size_adjust :: String | r) i
 font_size_adjust = attr (AttrName "font-size-adjust") <<< show
 
-font_stretch :: forall r i. String -> IProp (fontStretch :: String | r) i
+font_stretch :: forall r i. String -> IProp (font_stretch :: String | r) i
 font_stretch = attr (AttrName "font-stretch")
 
-font_style :: forall r i. String -> IProp (fontStyle :: String | r) i
+font_style :: forall r i. String -> IProp (font_style :: String | r) i
 font_style = attr (AttrName "font-style")
 
-font_variant :: forall r i. String -> IProp (fontVariant :: String | r) i
+font_variant :: forall r i. String -> IProp (font_variant :: String | r) i
 font_variant = attr (AttrName "font-variant")
 
-font_weight :: forall r i. String -> IProp (fontWeight :: String | r) i
+font_weight :: forall r i. String -> IProp (font_weight :: String | r) i
 font_weight = attr (AttrName "font-weight")
 
 dominant_baseline :: forall r i . Baseline -> IProp (transform :: String | r) i

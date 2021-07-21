@@ -1,5 +1,6 @@
 module Halogen.Svg.Indexed where
 
+import Type.Row (type (+))
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
 import Web.UIEvent.MouseEvent (MouseEvent)
 import Web.UIEvent.WheelEvent (WheelEvent)
@@ -31,7 +32,7 @@ C indicates that the collection of attributes does not apply to that element
 -}
 
 -- These core attributes are applicable to every element
-type CoreAttributes r = (id :: String, "class" :: String | r)
+type CoreAttributes r = ( id :: String, "class" :: String | r)
 
 -- Subset of events that work on Firefox 60/Chromium 66
 type GlobalEventAttributes r =
@@ -52,7 +53,7 @@ type GlobalEventAttributes r =
   | r
   )
 
-type GlobalAttributes r = GlobalEventAttributes (CoreAttributes r)
+type GlobalAttributes r = CoreAttributes + GlobalEventAttributes + r
 
 -- Presentation attributes, grouped by applicability (see table above) ---------
 type StrokeAttributes r =
@@ -89,166 +90,106 @@ type MarkerAttributes r =
   )
 
 type FontAttributes r =
-  ( fontFamily :: String
-  , fontSize :: String
-  , fontSizeAdjust :: Number
-  , fontStretch :: String
-  , fontStyle :: String
-  , fontVariant :: String
-  , fontWeight :: String
+  ( font_family :: String
+  , font_size :: String
+  , font_sizeAdjust :: Number
+  , font_stretch :: String
+  , font_style :: String
+  , font_variant :: String
+  , font_weight :: String
   | r
   )
 
 type AllPresentationAttributes r
-  = StrokeAttributes
-      ( StrokeJoinAttributes
-          ( StokeEndAttributes
-              ( FillAttributes
-                  ( FontAttributes
-                      ( MarkerAttributes r
-                      )
-                  )
-              )
-          )
-      )
+  = StrokeAttributes + StrokeJoinAttributes + StokeEndAttributes
+  + FillAttributes + FontAttributes + MarkerAttributes + r
 
 -- Specific SVG elements -------------------------------------------------------
 type SVGsvg
-  = GlobalAttributes
-      ( AllPresentationAttributes
-          ( width :: Number
-          , height :: Number
-          , viewBox :: String
-          , preserveAspectRatio :: String
-          )
-      )
+  = GlobalAttributes + AllPresentationAttributes
+  + ( width :: Number
+    , height :: Number
+    , viewBox :: String
+    , preserveAspectRatio :: String
+    )
 
 type SVGg
-  = GlobalAttributes
-      ( AllPresentationAttributes
-          ( transform :: String )
-      )
+  = GlobalAttributes + AllPresentationAttributes
+  + ( transform :: String )
 
 type SVGforeignObject
-  = GlobalAttributes
-      ( AllPresentationAttributes
-          ( x :: Number
-          , y :: Number
-          , height :: Number
-          , width :: Number
-          )
-      )
+  = GlobalAttributes + AllPresentationAttributes
+  + ( x :: Number
+    , y :: Number
+    , height :: Number
+    , width :: Number
+    )
 
 type SVGmarker
-  = GlobalAttributes
-      ( AllPresentationAttributes
-          ( markerWidth :: Number
-          , markerHeight :: Number
-          , strokeWidth :: Number
-          , refX :: Number
-          , refY :: Number
-          , orient :: String
-          , markerUnits :: String
-          )
-      )
+  = GlobalAttributes + AllPresentationAttributes
+  + ( markerWidth :: Number
+    , markerHeight :: Number
+    , strokeWidth :: Number
+    , refX :: Number
+    , refY :: Number
+    , orient :: String
+    , markerUnits :: String
+    )
 
 type SVGcircle
-  = GlobalAttributes
-      ( StrokeAttributes
-          ( FillAttributes
-              ( MarkerAttributes
-                  ( cx :: Number
-                  , cy :: Number
-                  , r :: Number
-                  , transform :: String
-                  )
-              )
-          )
-      )
+  = GlobalAttributes + StrokeAttributes + FillAttributes + MarkerAttributes
+  + ( cx :: Number
+    , cy :: Number
+    , r :: Number
+    , transform :: String
+    )
 
 type SVGellipse
-  = GlobalAttributes
-      ( StrokeAttributes
-          ( FillAttributes
-              ( MarkerAttributes
-                  ( cx :: Number
-                  , cy :: Number
-                  , rx :: Number
-                  , ry :: Number
-                  , transform :: String
-                  )
-              )
-          )
-      )
+  = GlobalAttributes + StrokeAttributes + FillAttributes + MarkerAttributes
+  + ( cx :: Number
+    , cy :: Number
+    , rx :: Number
+    , ry :: Number
+    , transform :: String
+    )
 
 type SVGline
-  = GlobalAttributes
-      ( StrokeAttributes
-          ( StokeEndAttributes
-              ( MarkerAttributes
-                  ( x1 :: Number
-                  , y1 :: Number
-                  , x2 :: Number
-                  , y2 :: Number
-                  , transform :: String
-                  )
-              )
-          )
-      )
+  = GlobalAttributes + StrokeAttributes + StokeEndAttributes + MarkerAttributes
+  + ( x1 :: Number
+    , y1 :: Number
+    , x2 :: Number
+    , y2 :: Number
+    , transform :: String
+    )
 
 type SVGpath
-  = GlobalAttributes
-      ( StrokeAttributes
-          ( StokeEndAttributes
-              ( StrokeJoinAttributes
-                  ( FillAttributes
-                      ( MarkerAttributes
-                          ( d :: String
-                          , transform :: String
-                          )
-                      )
-                  )
-              )
-          )
-      )
+  = GlobalAttributes + StrokeAttributes + StokeEndAttributes
+  + StrokeJoinAttributes + FillAttributes + MarkerAttributes
+  + ( d :: String
+    , transform :: String
+    )
 
 type SVGrect
-  = GlobalAttributes
-      ( StrokeAttributes
-          ( StrokeJoinAttributes
-              ( FillAttributes
-                  ( MarkerAttributes
-                      ( x :: Number
-                      , y :: Number
-                      , rx :: Number
-                      , ry :: Number
-                      , width :: Number
-                      , height :: Number
-                      , transform :: String
-                      )
-                  )
-              )
-          )
-      )
+  = GlobalAttributes + StrokeAttributes + StrokeJoinAttributes
+  + FillAttributes + MarkerAttributes
+  + ( x :: Number
+    , y :: Number
+    , rx :: Number
+    , ry :: Number
+    , width :: Number
+    , height :: Number
+    , transform :: String
+    )
 
 type SVGtext
-  = GlobalAttributes
-      ( StrokeAttributes
-          ( StokeEndAttributes
-              ( StrokeJoinAttributes
-                  ( FillAttributes
-                      ( FontAttributes
-                          ( x :: Number
-                          , y :: Number
-                          , text_anchor :: String
-                          , dominant_baseline :: String
-                          , transform :: String
-                          )
-                      )
-                  )
-              )
-          )
-      )
+  = GlobalAttributes + StrokeAttributes + StokeEndAttributes
+  + StrokeJoinAttributes + FillAttributes + FontAttributes
+  + ( x :: Number
+    , y :: Number
+    , text_anchor :: String
+    , dominant_baseline :: String
+    , transform :: String
+    )
 
 --------------------------------------------------------------------------------
 
