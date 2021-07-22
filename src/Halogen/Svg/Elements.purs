@@ -1,21 +1,39 @@
-module Halogen.Svg.Elements where
+module Halogen.Svg.Elements
+  ( element
+  , svg
+  , g
+  , circle
+  , ellipse
+  , rect
+  , path
+  , line
+  , text
+  , foreignObject
+  , defs
+  , marker
+  , animate
+  , animateMotion
+  , circleNode
+  , mpath
+  , title
+  ) where
 -- Like Halogen.HTML.Elements
 
 import Prelude
 
-import Halogen.Svg.Core as Core
-
+import Halogen.Svg.Core (element) as Core
 import Halogen.HTML.Core (HTML, Prop, ElemName(ElemName))
 import Halogen.HTML.Elements (Node, Leaf)
 import Halogen.HTML.Properties (IProp)
 import Unsafe.Coerce (unsafeCoerce)
 import Halogen.Svg.Indexed as I
 
-element :: forall r p i. ElemName -> Array (IProp r i) -> Array (HTML p i) -> HTML p i
+element :: forall r p i.
+  ElemName -> Array (IProp r i) -> Array (HTML p i) -> HTML p i
 element = coe Core.element
   where
     coe :: (ElemName -> Array (Prop i) -> Array (HTML p i) -> HTML p i)
-        -> ElemName -> Array (IProp r i) -> Array (HTML p i) -> HTML p i
+        -> (ElemName -> Array (IProp r i) -> Array (HTML p i) -> HTML p i)
     coe = unsafeCoerce
 
 svg :: forall p i. Node I.SVGsvg p i
@@ -52,7 +70,6 @@ marker :: forall p i. Node I.SVGmarker p i
 marker = element $ ElemName "marker"
 
 --------------------------------------------------------------------------------
-
 animate :: forall p i. Leaf I.SVGanimate p i
 animate props = element (ElemName "animate") props []
 
@@ -69,6 +86,5 @@ mpath :: forall p i. Leaf I.SVGmpath p i
 mpath props = element (ElemName "mpath") props []
 
 --------------------------------------------------------------------------------
-
 title :: forall p i. Node I.SVGtitle p i
 title = element (ElemName "title")
